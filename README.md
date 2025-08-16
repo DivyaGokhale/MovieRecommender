@@ -10,7 +10,7 @@ Includes user authentication, search history tracking, and a forgot password fea
 4. Responsive UI with movie grid layout
 5. Secure password hashing & session management
 
-🛠️ Tech Stack
+🛠️ Tech Stack : 
 Backend: Flask,SQLAlchemy
 Database: SQLite
 Frontend: HTML, CSS, JavaScript
