@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+      #movie-suggestions {
+            /* ... other styles ... */
+            overflow: auto; /* Add scroll if too many movies */
+            white-space: nowrap; /* Prevent wrapping to new lines */
+        }
+
+        #movie-suggestions ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            display: flex; /* Enable flexbox for horizontal layout */
+            flex-direction: row; /* Arrange items in a row */
+            gap: 10px; /* Spacing between items */
+        }
+
+        #movie-suggestions li {
+            border: 1px solid #ddd;
+            padding: 5px 10px;
+            border-radius: 4px;
+            margin-bottom: 5px; /* Add a little vertical spacing if needed */
+            white-space: nowrap; /* Prevent movie titles from wrapping */
+        }
+</style>
+
+<body>
+<ul>
+    {% for movie in movies %}
+    <li>{{ movie }}</li>
+    {% else %}
+    <li>No movies found starting with that letter.</li>
+    {% endfor %}
+</ul>
+
+</body>
+</html>

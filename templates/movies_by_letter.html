@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>movies_by_letter</title>
+</head>
+<body>
+    <h1>Movies Starting with "{{ letter }}"</h1>
+    {% if movies %}
+    <ul>
+        {% for movie in movies %}
+        <li>{{ movie }}</li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>No movies found starting with "{{ letter }}".</p>
+    {% endif %}
+    <br>
+    <a href="/">Go back to the homepage</a>
+</body>
+</html>

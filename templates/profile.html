@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head><title>Welcome</title></head>
+<body>
+  <h2>Welcome, {{ user.username }}!</h2>
+  <p>This is your dashboard.</p>
+  <a href="/logout">Logout</a>
+
+  {% if user %}
+  <h2 style="text-align: center;">Welcome, {{ user.username }}!</h2>
+{% endif %}
+
+
+  <h3>Past Searches</h3>
+  <ul>
+    {% for search in searches %}
+      <li>{{ search.search_term }}</li>
+    {% endfor %}
+  </ul>
+  
+  <h3>You Might Also Like</h3>
+  <ul>
+    {% for title, poster in suggestions %}
+      <li>
+        <img src="{{ poster }}" width="100"><br>
+        {{ title }}
+      </li>
+    {% endfor %}
+  </ul>
+  
+  <!-- 🔘 Search More Recommendations Button -->
+  <div style="margin-top: 30px; text-align: center;">
+    <a href="/dashboard">
+      <button style="padding: 10px 20px; background-color: #e50914; color: white; border: none; border-radius: 6px; font-size: 16px; cursor: pointer;">
+        🔍 Search More Recommendations
+      </button>
+    </a>
+  </div>
+    
+  
+</body>
+</html>

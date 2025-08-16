@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Recommendations</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <style>
+    body {
+      margin: 0;
+      padding-top: 80px;
+      background-color: #141414;
+      color: white;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+      z-index: 1000;
+      box-sizing: border-box;
+    }
+
+    .logo {
+      font-size: 28px;
+      font-weight: bold;
+      color: white;
+    }
+
+    .navbar nav {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .navbar nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 16px;
+    }
+
+    .logout-button {
+      background-color: red;
+      border: none;
+      color: white;
+      padding: 10px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    h2 {
+      font-size: 1.8rem;
+      text-align: center;
+      margin-top: 30px;
+      color: white;
+    }
+
+    .movie-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+      margin: 30px 40px;
+    }
+
+    .movie-card {
+      width: 180px;
+      text-align: center;
+    }
+
+    .movie-card img {
+      width: 100%;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+      transition: transform 0.3s;
+    }
+
+    .movie-card img:hover {
+      transform: scale(1.08);
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+      text-align: center;
+    }
+
+    ul li {
+      margin: 10px 0;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="navbar">
+    <div class="logo">CineMate</div>
+    <nav>
+      <a href="/dashboard">Home</a>
+      <a href="/trending">Trending</a>
+      <a href="/top_rated">Top Rated</a>
+      <form action="/logout" method="get" style="display: inline;">
+        <button class="logout-button">Logout</button>
+      </form>
+    </nav>
+  </header>
+
+  <h2 style="text-align:center; margin-top: 30px;">Recommendations for "{{ movie_name }}"</h2>
+
+  {% if not_found %}
+    <p style="text-align:center;">No recommendations found for "{{ movie_name }}".</p>
+    {% if suggestions %}
+      <h3 style="text-align:center;">Did you mean:</h3>
+      <ul style="text-align:center;">
+        {% for title, poster, score in suggestions %}
+          <li>{{ title }} ({{ score }}%)</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  {% else %}
+    <div class="movie-row">
+      {% for title, poster in recommendations %}
+        <div class="movie-card">
+          <img src="{{ poster }}" alt="{{ title }}">
+          <p>{{ title }}</p>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+  
+  {% if total_pages is defined and total_pages > 1 %}
+  <div class="pagination" style="text-align:center; margin-top: 30px;">
+    {% if current_page > 1 %}
+      <a href="
+      {% if request.path == '/recommend' %}
+        /recommend?movie_name={{ movie_name }}&page={{ current_page - 1 }}
+      {% elif movie_name in ['Kids', 'Teens', 'Adults', 'All'] %}
+        /search_by_age?age_group={{ movie_name }}&page={{ current_page - 1 }}
+      {% elif movie_name %}
+        /recommend_by_emotion?emotion={{ movie_name|lower }}&page={{ current_page - 1 }}
+      {% else %}
+        /recommend?movie_name={{ movie_name }}&page={{ current_page - 1 }}
+      {% endif %}
+      ">⬅ Prev</a>
+    {% endif %}
+  
+    <span>Page {{ current_page }} of {{ total_pages }}</span>
+
+    {% if current_page < total_pages %}
+    <a href="
+    {% if request.path == '/recommend' %}
+      /recommend?movie_name={{ movie_name }}&page={{ current_page + 1 }}
+    {% elif movie_name in ['Kids', 'Teens', 'Adults', 'All'] %}
+      /search_by_age?age_group={{ movie_name }}&page={{ current_page + 1 }}
+    {% elif movie_name|lower in ['happy', 'sad', 'excited', 'relaxed'] %}
+      /recommend_by_emotion?emotion={{ movie_name|lower }}&page={{ current_page + 1 }}
+    {% else %}
+      /search_by_genre?genre={{ movie_name }}&page={{ current_page + 1 }}
+    {% endif %}
+    ">Next ➔</a>
+  {% endif %}
+    </div>
+{% endif %}
+
+</body>
+</html>
